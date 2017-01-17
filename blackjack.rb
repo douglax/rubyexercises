@@ -1,50 +1,22 @@
-def getCard()
-  #Get a random number from 1 to 13
-  #Identify special cases A J Q K
-  #return card
-  num = 1 + rand(13)
-  card = num.to_s
-  if num == 11
-    card = "J"
-  elsif num == 12
-    card = "Q"
-  elsif num == 13
-    card = "K"
-  elsif num == 1
-    card = "A"
-  end
+def dealer_hand()
 
-  return card
-end
+  cards = initial_hand()
 
-def initial_hand()
-  # create array to hold hand
-  # deal first to cards
-  hand = Array.new(2)
-  2.times do |i|
+  puts "Initial hand: #{cards}"
+  count = evaluate_hand(cards)
+  puts "Sum: #{count}"
+
+  #TODO check if initial_hand was a Blackjack
+
+  while count <= 17
     c = getCard()
-    hand[i] = c
+    cards.push(c)
+    puts "New card: #{c}"
+    count = evaluate_hand(cards)
   end
-  return hand
+  puts "Sum: #{count}"
+  return count
 end
-
-def sort_hand(hand)
-  ace_count = 0
-  sorted_hand = Array.new(0)
-  hand.each do |card|
-    if card == "A"
-      ace_count += 1
-    else
-      sorted_hand.push(card)
-    end
-  end
-
-  ace_count.times do |xx|
-    sorted_hand.push("A")
-  end
-  return sorted_hand, ace_count
-end
-
 
 
 def evaluate_hand(hand)
@@ -77,11 +49,39 @@ def evaluate_hand(hand)
       count = count + ace_count
     end
   end
-
-
   return count
 end
 
+
+def getCard()
+  #Get a random number from 1 to 13
+  #Identify special cases A J Q K
+  #return card
+  num = 1 + rand(13)
+  card = num.to_s
+  if num == 11
+    card = "J"
+  elsif num == 12
+    card = "Q"
+  elsif num == 13
+    card = "K"
+  elsif num == 1
+    card = "A"
+  end
+
+  return card
+end
+
+def initial_hand()
+  # create array to hold hand
+  # deal first to cards
+  hand = Array.new(2)
+  2.times do |i|
+    c = getCard()
+    hand[i] = c
+  end
+  return hand
+end
 
 
 
@@ -112,40 +112,23 @@ def player_hand()
   return count
 end
 
-
-def dealer_hand()
-
-  cards = initial_hand()
-
-  puts "Initial hand: #{cards}"
-  count = evaluate_hand(cards)
-  puts "Sum: #{count}"
-
-  #TODO check if initial_hand was a Blackjack
-
-  while count <= 17
-    c = getCard()
-    cards.push(c)
-    puts "New card: #{c}"
-    count = evaluate_hand(cards)
-  end
-  puts "Sum: #{count}"
-  return count
-end
-
-def test()
-  test_hand = Array.new(0)
-  20.times do
-    test_hand.push(getCard())
+def sort_hand(hand)
+  ace_count = 0
+  sorted_hand = Array.new(0)
+  hand.each do |card|
+    if card == "A"
+      ace_count += 1
+    else
+      sorted_hand.push(card)
+    end
   end
 
-  puts "Original hand: #{test_hand}"
-
-  sorted = sort_hand(test_hand)
-
-  puts "Sorted hand: #{sorted}"
-
+  ace_count.times do |xx|
+    sorted_hand.push("A")
+  end
+  return sorted_hand, ace_count
 end
+
 
 
 player_hand()
